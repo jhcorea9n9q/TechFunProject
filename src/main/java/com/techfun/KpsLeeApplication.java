@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 
 @SpringBootApplication
-@MapperScan(basePackages="com.example.persistence")
+@MapperScan(basePackages="com.techfun.persistence")
 public class KpsLeeApplication {
 
 	public static void main(String[] args) {
