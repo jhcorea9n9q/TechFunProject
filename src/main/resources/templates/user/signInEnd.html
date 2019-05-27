@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" th:href="@{/lib/mainIcon.png}">
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/user.css}" />
+    <title>Printlnへようこそ。</title>
+</head>
+<body>
+    <section class="section_sign f_l display_ib backcolor_section">
+        <div class="div_sign f_l display_ib backcolor_div">
+            <h1 class="color_w">アカウント登録終了</h1>
+            <form th:action="@{/login}" method="post">
+                <div class="f_l display_ib">
+                    <p>Printlnへのアカウント登録が完了しました。</p><br>
+                    <p th:if="${signForm}">登録したEメール：<span id="endSpan" th:text="${signForm.email}"></span></p><br>
+                    <p>サービスを利用するためには、まずこのアカウントで一度ログインをしてください。</p><br>
+                </div>
+                <br>
+                <button type="submit" id="endloginBtn" class="f_l display_ib">ログイン</button>
+            </form>
+        </div>
+    </section>
+</body>
+</html>

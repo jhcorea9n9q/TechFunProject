@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" th:href="@{/lib/mainIcon.png}">
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <title>System.out.println("home");</title>
+</head>
+<body>
+    <section class="f_l display_ib">
+        <div id="home_main" class="f_l display_ib">
+            <div id="userInfo" th:if="${userInfo}">
+                <h4><span th:text="${userInfo.email}"></span>でログインしています。</h4>
+            </div>
+            <h1>開発も、友達も大事。</h1>
+            <h3><span>Println</span>に参加しよう。</h3>
+            <form th:action="@{/home-choice}" method="post">
+                <div id="non_login" th:unless="${userInfo}">
+                    <button type="submit" id="signInBtn" name="signInBtn">アカウントを作成</button><br>
+                    <button type="submit" id="loginBtn" name="loginBtn">ログイン</button>
+                </div>
+                <div id="yes_login" th:if="${userInfo}">
+                    <button type="submit" id="mainBtn" name="mainBtn">新しい投稿を確認</button><br>
+                    <button type="submit" id="logoutBtn" name="logoutBtn">ログアウト</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <footer class="f_l display_ib">
+        <div>
+            @ 2019 Techfun Project "Println" / Keyport Solutions : C.H Lee
+        </div>
+    </footer>
+</body>
+</html>

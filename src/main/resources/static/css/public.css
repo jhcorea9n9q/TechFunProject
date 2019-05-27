@@ -1,7 +1,19 @@
-html, body {margin: 0; background-color: black; }
-h1, h2, h3, h4, h5, h6, p {margin: 0}
+@font-face{
+    font-family:'SourceCodePro-Regular';
+    src:url('../lib/SourceCodePro-Regular.ttf')
+}
 
-.cw{color: white}
-.bcw{background-color: white}
-.fl{float: left}
-.fr{float: right}
+html, body {
+    margin: 0;
+    background-color: #222222;
+}
+
+h1, h2, h3, h4, h5, h6, p {margin: 0; color: #dbdbdb; }
+
+.color_w {color: white}
+.backcolor_w {background-color: white}
+.backcolor_section {background-color: #2e3136}
+.backcolor_div {background-color: #36393f}
+.display_ib {display: inline-block}
+.f_l {float: left}
+.f_r {float: right}

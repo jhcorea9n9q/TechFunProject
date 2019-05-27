@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" th:href="@{/lib/mainIcon.png}">
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/user.css}" />
+    <title>アカウント登録確認 /Println</title>
+</head>
+<body>
+    <section class="section_sign f_l display_ib backcolor_section">
+        <div class="div_sign f_l display_ib backcolor_div">
+            <h1 class="color_w">アカウント登録確認</h1>
+            <form th:action="@{/sign-end}" th:object="${signForm}" method="post">
+                <table class="f_l display_ib">
+                    <tr>
+                        <td class="signKey">@ Email</td>
+                        <td class="signValue" th:text="*{email}"></td>
+                    </tr>
+                </table>
+                <div id="signCheck" class="f_l display_ib backcolor_w">
+                    <p><span>※</span>本サイトの規約に同意します。</p>
+                    <input id="sign_c" name="sign_c" type="checkbox">
+                </div>
+                <br>
+                <button type="submit" id="endBtn" name="endBtn" class="f_l display_ib">登録!</button><br>
+                <button type="submit" id="backBtn" name="backBtn" class="f_l display_ib">もどる</button>
+            </form>
+        </div>
+    </section>
+    <script th:if="${checkError}" type="text/javascript">
+    	alert("登録を完了するためには、規約に同意してください。");
+    </script>
+</body>
+</html>

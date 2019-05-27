@@ -1,0 +1,153 @@
+.section_sign {
+    width: 100%;
+    height: 100vh;
+    min-width: 800px;
+}
+.div_sign {
+    width: 650px;
+    height: calc(100% - 50px);
+    padding-top: 50px;
+    padding-left: 150px;
+    margin: 0 calc((100% - 800px) / 2);
+}
+.div_sign form {
+    margin-top: 50px;
+}
+.div_sign form > div {
+    width: 100%;
+    margin-bottom: 40px;
+}
+.div_sign input {
+    background-color: #36393f;
+    border: none;
+    border-bottom: white solid 1.5px;
+    width: 500px;
+    height: 40px;
+    outline: none;
+    font-size: 25px;
+    color: #dbdbdb;
+}
+.div_sign input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px #36393f inset;
+    -webkit-text-fill-color: #dbdbdb;
+}
+.div_sign input:focus {
+    border-color: #ffe200;
+}
+.signItem {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.signError {
+    margin-top: 10px;
+    color: #ff5555;
+}
+.div_sign button {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 25px 65px;
+    width: 120px;
+    padding: 10px 0;
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 5px;
+    border-bottom: 5px solid black;
+    outline: none;
+}
+.div_sign button:hover {
+    cursor: pointer;
+    color: #ebebeb;
+    background-color: #919191;
+}
+.div_sign button:active {
+    margin-top: 28px;
+    color: #ebebeb;
+    background-color: #919191;
+    border-bottom: 2px solid black;
+}
+
+/******************************************************/
+
+.div_sign table {
+    width: 100%;
+    margin-bottom: 50px;
+}
+.div_sign td {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.signKey {
+    color: #dbdbdb;
+    font-weight: bold;
+    padding-right: 50px;
+}
+
+.signValue {
+    color: #ffe200;
+}
+
+#signCheck {
+    width: calc(100% - 150px);
+    height: 100px;
+    border-radius: 5px;
+    border: double 5px #808080;
+    text-align: center;
+}
+
+#signCheck p {
+    margin-top: 35px;
+    margin-right: 50px;
+    color: black;
+}
+
+#signCheck p span {
+    color: red;
+    margin-right: 15px;
+}
+
+#signCheck input {
+    width: 15px;
+    height: 15px;
+    position: relative;
+    left: 120px;
+    bottom: 20px;
+}
+
+#signCheck input:hover {
+    cursor: pointer;
+}
+
+/******************************************************/
+
+#endloginBtn {
+    margin-left: 190px;
+}
+
+#endSpan {
+	color: #ffe200;
+}
+
+/******************************************************/
+
+.loginDiv input {
+    background-color: white;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+    width: 488px;
+    height: 30px;
+    font-size: 18px;
+    color: black;
+    padding-left: 10px;
+}
+
+.loginDiv input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+    -webkit-text-fill-color: black;
+}
+.loginDiv input:focus {
+    border-color: #ffe200;
+}
+
+.loginError {
+    color: #ff5555;
+}

@@ -1,0 +1,91 @@
+.section_prof {
+    width: 100%;
+    height: auto;
+    min-width: 800px;
+}
+
+.div_prof {
+    width: 700px;
+    height: auto;
+    padding: 50px;
+    margin: 0 calc((100% - 800px) / 2);
+}
+
+.div_prof > h1 {
+    margin-bottom: 50px;
+}
+
+.div_prof > h4 {
+    margin-bottom: 10px;
+}
+
+.must {
+    color: #ff5555;
+}
+
+form {
+    margin-top: 50px;
+}
+
+td {
+    padding-bottom: 30px;
+    color: #dbdbdb;
+    border-bottom: #bfbfbf 0.5px dashed;
+}
+
+.prof_item {
+    padding-right: 220px;
+}
+
+.prof_item p {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.prof_prvt {
+    text-align: left;
+    padding-right: 30px;
+}
+
+#nick {
+    width: 350px;
+    height: 20px;
+    padding-left: 10px;
+    border-radius: 25px;
+    outline: none;
+}
+
+.dateInput {
+    border-radius: 5px;
+    outline: none;
+}
+
+.prof_prvt select {
+    height: 24px;
+    border-radius: 4px;
+    outline: none;
+}
+
+#profileError {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+#profileError h4 {
+    color: #ff5555;
+    display:none;
+}
+
+button {
+    width: 100px;
+    height: 40px;
+    background-color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    margin-left: 300px;
+}
+button:hover {
+    cursor: pointer;
+    background-color: #eaeaea;
+}
