@@ -24,9 +24,11 @@ public class ProfileForm implements Serializable {
 	private String birth;
 	private Integer birthPrvt;
 	
+	private String[] hobbys;
 	private String hobby;
 	private Integer hobbyPrvt;
 	
+	private String[] pLangs;
 	private String prgrmLang;
 	
 	private String intrdc;
@@ -92,6 +94,12 @@ public class ProfileForm implements Serializable {
 	public void setBirthPrvt(Integer birthPrvt) {
 		this.birthPrvt = birthPrvt;
 	}
+	public String[] getHobbys() {
+		return hobbys;
+	}
+	public void setHobbys(String[] hobbys) {
+		this.hobbys = hobbys;
+	}
 	public String getHobby() {
 		return hobby;
 	}
@@ -103,6 +111,12 @@ public class ProfileForm implements Serializable {
 	}
 	public void setHobbyPrvt(Integer hobbyPrvt) {
 		this.hobbyPrvt = hobbyPrvt;
+	}
+	public String[] getpLangs() {
+		return pLangs;
+	}
+	public void setpLangs(String[] pLangs) {
+		this.pLangs = pLangs;
 	}
 	public String getPrgrmLang() {
 		return prgrmLang;

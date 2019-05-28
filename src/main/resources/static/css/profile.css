@@ -34,7 +34,7 @@ td {
 }
 
 .prof_item {
-    padding-right: 220px;
+    padding-right: 210px;
 }
 
 .prof_item p {
@@ -68,11 +68,9 @@ td {
 
 #profileError {
     margin-top: 20px;
-    margin-bottom: 40px;
 }
 #profileError h4 {
     color: #ff5555;
-    display:none;
 }
 
 button {
@@ -84,6 +82,7 @@ button {
     border: none;
     border-radius: 25px;
     margin-left: 300px;
+    margin-top: 40px;
 }
 button:hover {
     cursor: pointer;

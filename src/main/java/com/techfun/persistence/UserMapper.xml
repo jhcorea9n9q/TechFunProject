@@ -31,4 +31,11 @@
 				sns_user.id = #{id}
 		</where>
 	</select>
+	<insert id="insertProfile">
+		INSERT INTO profile(user_id, nicknm, prof_pic_url, gender, gender_prvt, birth, birth_prvt, hobby, hobby_prvt, prgrm_lang, intrdc, intrdc_prvt, inp_date)
+		VALUES (#{userId}, #{nicknm}, #{profPicUrl}, #{gender}, #{genderPrvt}, #{birth}, #{birthPrvt}, #{hobby}, #{hobbyPrvt}, #{prgrmLang}, #{intrdc}, #{intrdcPrvt}, NOW());
+	</insert>
+	<update id="profileComplete">
+		UPDATE sns_user SET prof_yn = 'Y' WHERE id = #{id};
+	</update>
 </mapper>

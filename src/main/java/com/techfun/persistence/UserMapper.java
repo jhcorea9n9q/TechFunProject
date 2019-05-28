@@ -14,5 +14,9 @@ public interface UserMapper {
 	public SNSUser accountCheckbyNick(SNSUser domain);
 	
 	public Profile getProfileData(SNSUser userInfo);
+	
+	public void insertProfile(Profile domain);
+	
+	public void profileComplete(SNSUser userInfo);
 
 }

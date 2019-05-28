@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<link rel="hortcut icon" href="lib/mainIcon.png">
+	<link rel="shortcut icon" th:href="@{/lib/mainIcon.png}">
     <meta http-equiv="Content-Style-Type" content="text/css" />
-    <link rel="stylesheet" type="text/css" href="css/public.css">
-    <link rel="stylesheet" type="text/css" href="css/profile.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}" />
     <title>プロフィール作成 /Println</title>
 </head>
 <body>
@@ -14,31 +14,35 @@
             <h1>初めてのログイン、ありがとうございます。</h1>
             <h4>利用する前に、以下の項目を入力しプロフィールを作成してください！</h4>
             <h4 class="must">(※がついてる項目は、必ず記入してください。)</h4>
-            <form action="main.html">
+            <form th:action="@{/main}" enctype="multipart/form-data" th:object="${profForm}" method="post">
+            	<div id="profileError" th:if="${#fields.hasErrors('all')}">
+                    <h4 th:errors="*{all}"></h4>
+                </div>
                 <table>
                     <tr>
                         <td class="prof_item">
                             <p>ニックネーム<span class="must"> ※</span></p>
-                            <input type="text" id="nick" maxlength="25" />
+                            <input type="text" id="nick" th:field="*{nicknm}" maxlength="25" />
                         </td>
                         <td class="prof_prvt"></td>
                     </tr>
                     <tr>
                         <td class="prof_item">
                             <p>プロフィール写真登録</p>
-                            <input type="file" id="myImg" />
+                            <input type="file" id="myImg" name="file" />
+                            <p class="must">(ファイルの最大容量は5MBまでです。)</p>
                         </td>
                         <td class="prof_prvt"></td>
                     </tr>
                     <tr>
                         <td class="prof_item">
                             <p>性別</p>
-                        <input type="radio" class="gender" value="1" />男性
-                        <input type="radio" class="gender" value="2" />女性
+                        <input type="radio" class="gender" th:field="*{gender}" value="1" />男性
+                        <input type="radio" class="gender" th:field="*{gender}" value="2" />女性
                         </td>
                         <td class="prof_prvt">
                             <p>公開範囲</p>
-                            <select>
+                            <select th:field="*{genderPrvt}">
                                 <option value="0">未公開</option>
                                 <option value="1" selected>友達のみ</option>
                                 <option value="2">全体公開</option>
@@ -48,22 +52,25 @@
                     <tr>
                         <td class="prof_item">
                             <p>生年月日</p>
-                            <select class="dateInput">
-                                <option value="1900">1900</option>
-                                <option value="2020">2020</option>
+                            <select class="dateInput" th:field="*{year}">
+                            	<option value="0000"></option>
+                            	<option th:each="y : ${#numbers.sequence(2010,1910)}"  th:value="${y}" th:text="${y}"></option>
                             </select> 年
-                            <select class="dateInput">
-                                <option value="01">01</option>
-                                <option value="12">12</option>
+                            <select class="dateInput" th:field="*{month}">
+                            	<option value="00"></option>
+                            	<option th:each="m : ${#numbers.sequence(1,9)}" th:value="${'0'+m}" th:text="${'0'+m}"></option>
+                            	<option th:each="m : ${#numbers.sequence(10,12)}" th:value="${m}" th:text="${m}"></option>
                             </select> 月
-                            <select class="dateInput">
-                                <option value="01">01</option>
-                                <option value="31">31</option>
+                            <select class="dateInput" th:field="*{day}">
+                            	<option value="00"></option>
+                                <option th:each="d : ${#numbers.sequence(1,9)}" th:value="${'0'+d}" th:text="${'0'+d}"></option>
+                            	<option th:each="d : ${#numbers.sequence(10,31)}" th:value="${d}" th:text="${d}"></option>
                             </select> 日
+                            <p class="must">(一部だけの選択も可能です。)</p>
                         </td>
                         <td class="prof_prvt">
                             <p>公開範囲</p>
-                            <select>
+                            <select th:field="*{birthPrvt}">
                                 <option value="0">未公開</option>
                                 <option value="1" selected>友達のみ</option>
                                 <option value="2">全体公開</option>
@@ -73,24 +80,24 @@
                     <tr>
                         <td class="prof_item">
                             <p>趣味</p>
-                            <input type="checkbox" class="hobby">アニメ・漫画<br>
-                            <input type="checkbox" class="hobby">スポーツ・運動<br>
-                            <input type="checkbox" class="hobby">結婚・恋愛<br>
-                            <input type="checkbox" class="hobby">音楽・カラオケ<br>
-                            <input type="checkbox" class="hobby">車・バイク・自転車など<br>
-                            <input type="checkbox" class="hobby">読書<br>
-                            <input type="checkbox" class="hobby">映画・講演など<br>
-                            <input type="checkbox" class="hobby">インターネット・ゲーム<br>
-                            <input type="checkbox" class="hobby">料理<br>
-                            <input type="checkbox" class="hobby">旅行・散歩<br>
-                            <input type="checkbox" class="hobby">グルメ・食べ歩き<br>
-                            <input type="checkbox" class="hobby">手芸・裁縫<br>
-                            <input type="checkbox" class="hobby">お花・ガーデニング<br>
-                            <input type="checkbox" class="hobby">ショッピング
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="アニメ・漫画"> アニメ・漫画<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="スポーツ・運動"> スポーツ・運動<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="結婚・恋愛"> 結婚・恋愛<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="音楽・カラオケ"> 音楽・カラオケ<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="車・バイク・自転車など"> 車・バイク・自転車など<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="読書"> 読書<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="映画・講演など"> 映画・講演など<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="インターネット・ゲーム"> インターネット・ゲーム<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="料理"> 料理<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="旅行・散歩"> 旅行・散歩<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="グルメ・食べ歩き"> グルメ・食べ歩き<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="手芸・裁縫"> 手芸・裁縫<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="お花・ガーデニング"> お花・ガーデニング<br>
+                            <input type="checkbox" class="hobby" th:field="*{hobbys}" value="ショッピング"> ショッピング
                         </td>
                         <td class="prof_prvt">
                             <p>公開範囲</p>
-                            <select>
+                            <select th:field="*{hobbyPrvt}">
                                 <option value="0">未公開</option>
                                 <option value="1" selected>友達のみ</option>
                                 <option value="2">全体公開</option>
@@ -100,32 +107,32 @@
                     <tr>
                         <td class="prof_item">
                             <p>使えるプログラミング言語</p>
-                            <input type="checkbox" class="pLang">C<br>
-                            <input type="checkbox" class="pLang">C#<br>
-                            <input type="checkbox" class="pLang">C++<br>
-                            <input type="checkbox" class="pLang">Java<br>
-                            <input type="checkbox" class="pLang">JavaScript<br>
-                            <input type="checkbox" class="pLang">python<br>
-                            <input type="checkbox" class="pLang">Go<br>
-                            <input type="checkbox" class="pLang">Kotlin<br>
-                            <input type="checkbox" class="pLang">Perl<br>
-                            <input type="checkbox" class="pLang">PHP<br>
-                            <input type="checkbox" class="pLang">R<br>
-                            <input type="checkbox" class="pLang">Ruby<br>
-                            <input type="checkbox" class="pLang">Swift<br>
-                            <input type="checkbox" class="pLang">Scala<br>
-                            <input type="checkbox" class="pLang">VBA
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="C"> C<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="C#"> C#<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="C++"> C++<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="Java"> Java<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="JavaScript"> JavaScript<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="python"> python<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="Go"> Go<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="Kotlin"> Kotlin<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="Perl"> Perl<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="PHP"> PHP<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="R"> R<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="Ruby"> Ruby<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="Swift"> Swift<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value=Scala> Scala<br>
+                            <input type="checkbox" class="pLang" th:field="*{pLangs}" value="VBA"> VBA
                         </td>
                         <td class="prof_prvt"></td>
                     </tr>
                     <tr>
                         <td class="prof_item">
                             <p>自己紹介</p>
-                            <textarea id="myIntro" rows="5" cols="50" maxlength="100"></textarea>
+                            <textarea id="myIntro" th:field="*{intrdc}" rows="5" cols="50" maxlength="100"></textarea>
                         </td>
                         <td class="prof_prvt">
                             <p>公開範囲</p>
-                            <select>
+                            <select th:field="*{intrdcPrvt}">
                                 <option value="0">未公開</option>
                                 <option value="1" selected>友達のみ</option>
                                 <option value="2">全体公開</option>
@@ -133,9 +140,6 @@
                         </td>
                     </tr>
                 </table>
-                <div id="profileError">
-                    <h4>error!</h4>
-                </div>
                 <button type="submit">完了</button>
             </form>
         </div>

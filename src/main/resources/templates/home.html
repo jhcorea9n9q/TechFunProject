@@ -11,17 +11,18 @@
 <body>
     <section class="f_l display_ib">
         <div id="home_main" class="f_l display_ib">
-            <div id="userInfo" th:if="${userInfo}">
-                <h4><span th:text="${userInfo.email}"></span>でログインしています。</h4>
+            <div id="userInfo" th:if="${nickname}">
+                <h4><span th:text="${nickname}"></span>さんがログイン中です。</h4>
             </div>
+            <p th:if="${userInfo}">まだプロフィールを完成しておりません。<br />もう一度<span th:text="${userInfo}"></span>でログインして、作成を完了してください。</p>
             <h1>開発も、友達も大事。</h1>
             <h3><span>Println</span>に参加しよう。</h3>
             <form th:action="@{/home-choice}" method="post">
-                <div id="non_login" th:unless="${userInfo}">
+                <div id="non_login" th:unless="${nickname}">
                     <button type="submit" id="signInBtn" name="signInBtn">アカウントを作成</button><br>
                     <button type="submit" id="loginBtn" name="loginBtn">ログイン</button>
                 </div>
-                <div id="yes_login" th:if="${userInfo}">
+                <div id="yes_login" th:if="${nickname}">
                     <button type="submit" id="mainBtn" name="mainBtn">新しい投稿を確認</button><br>
                     <button type="submit" id="logoutBtn" name="logoutBtn">ログアウト</button>
                 </div>

@@ -41,5 +41,12 @@ public class UserDBAccessService implements UserDBAccessSample {
 	public Profile getProfileData(SNSUser userInfo) {
 		return mapper.getProfileData(userInfo);
 	}
+
+	@Override
+	@Transactional
+	public void insertProfile(SNSUser userInfo, Profile domain) {
+		mapper.insertProfile(domain);
+		mapper.profileComplete(userInfo);
+	}
 	
 }

@@ -1,5 +1,6 @@
 package com.techfun.web.controller;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.techfun.domain.SNSUser;
+import com.techfun.service.UserDBAccessSample;
 import com.techfun.web.form.ProfileForm;
 import com.techfun.web.form.SignInForm;
 import com.techfun.web.form.UserForm;
@@ -20,6 +22,9 @@ public class HomeController {
 	
 	@Autowired
 	private SNSUser userInfo;
+	
+	@Autowired
+	private UserDBAccessSample UDS;
 	
 	@ModelAttribute("signForm")
 	public SignInForm setSignInForm() {
@@ -39,7 +44,11 @@ public class HomeController {
 	@RequestMapping("/println")
 	public String home(Model model) {
 		if(userInfo.getEmail()!=null) {
-			model.addAttribute("userInfo", userInfo);
+			if(userInfo.getProfYn().equals("Y")) {
+				model.addAttribute("nickname", UDS.getProfileData(userInfo).getNicknm());
+			}else {
+				model.addAttribute("userInfo", userInfo.getEmail());
+			}
 		}
 		return "home";
 	}
@@ -56,14 +65,32 @@ public class HomeController {
 	
 	@RequestMapping(value = "/home-choice", params = "mainBtn", method = RequestMethod.POST)
 	public String homeMain(Model model) {
-		// model.addAttribute("userInfo", userInfo);
-		return "user/profile/mypage";
+		if(userInfo.getEmail()!=null) {
+			model.addAttribute("userInfo", userInfo);
+			model.addAttribute("profileInfo", UDS.getProfileData(userInfo));
+		}
+		return "contents/main";
 	}
 	
 	@RequestMapping(value = "/home-choice", params = "logoutBtn", method = RequestMethod.POST)
 	public String homeLogout(SessionStatus sess) {
 		sess.setComplete();
-		return "home";
+		SNSUser domain = new SNSUser();
+		BeanUtils.copyProperties(domain, userInfo);
+		return "redirect:/println";
+	}
+	
+	@RequestMapping("/login-main")
+	public String login() {
+		return "user/login";
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(SessionStatus sess) {
+		sess.setComplete();
+		SNSUser domain = new SNSUser();
+		BeanUtils.copyProperties(domain, userInfo);
+		return "redirect:/println";
 	}
 
 }
