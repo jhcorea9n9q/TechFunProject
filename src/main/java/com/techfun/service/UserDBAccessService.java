@@ -48,5 +48,31 @@ public class UserDBAccessService implements UserDBAccessSample {
 		mapper.insertProfile(domain);
 		mapper.profileComplete(userInfo);
 	}
+
+	@Override
+	@Transactional
+	public void accountUpd(SNSUser userInfo) {
+		mapper.accountUpd(userInfo);
+	}
+
+	@Override
+	@Transactional
+	public void profileUpd(Profile domain) {
+		mapper.profileUpd(domain);
+	}
+
+	@Override
+	@Transactional
+	public void profPicUpd(Profile domain) {
+		mapper.profileUpd(domain);
+		mapper.profPicUpd(domain);
+	}
+
+	@Override
+	@Transactional
+	public void accountDel(SNSUser userInfo, Profile domain) {
+		mapper.profileDel(domain);
+		mapper.accountDel(userInfo);
+	}
 	
 }

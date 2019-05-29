@@ -16,5 +16,7 @@ public class ContentsController {
 	
 	@Autowired
 	private UserDBAccessSample UDS;
+	
+	// RequestMapping("/println/main")
 
 }

@@ -14,5 +14,13 @@ public interface UserDBAccessSample {
 	public Profile getProfileData(SNSUser userInfo);
 	
 	public void insertProfile(SNSUser userInfo, Profile domain);
+	
+	public void accountUpd(SNSUser userInfo);
+	
+	public void profileUpd(Profile domain);
+	
+	public void profPicUpd(Profile domain);
+	
+	public void accountDel(SNSUser userInfo, Profile domain);
 
 }

@@ -5,37 +5,84 @@
 
 <mapper namespace="com.techfun.persistence.UserMapper">
 	<select id="emailHasSame" resultType="Integer">
-		SELECT COUNT(*) FROM sns_user WHERE email = #{email}
+		SELECT COUNT(*) FROM sns_user
+		<where>
+			email = #{email} AND del_yn = 'N'
+		</where>
 	</select>
 	<insert id="userInsert">
 		INSERT INTO sns_user(email, password, inp_date)
-		VALUES (#{email}, #{password}, NOW());
+		VALUES (#{email}, #{password}, NOW())
 	</insert>
 	<select id="accountCheck" resultType="com.techfun.domain.SNSUser">
 		SELECT * FROM sns_user
 		<where>
-				email = #{email} AND password = #{password}
+			email = #{email} AND password = #{password} AND del_yn = 'N'
 		</where>
 	</select>
 	<select id="accountCheckbyNick" resultType="com.techfun.domain.SNSUser">
 		SELECT sns_user.* FROM sns_user
 		INNER JOIN profile ON sns_user.id = profile.user_id
 		<where>
-				profile.nicknm = #{email} AND password = #{password}
+			profile.nicknm = #{email} AND password = #{password} AND del_yn = 'N'
 		</where>
 	</select>
 	<select id="getProfileData" resultType="com.techfun.domain.Profile">
 		SELECT profile.* FROM sns_user
 		INNER JOIN profile ON sns_user.id = profile.user_id
 		<where>
-				sns_user.id = #{id}
+			sns_user.id = #{id}
 		</where>
 	</select>
 	<insert id="insertProfile">
 		INSERT INTO profile(user_id, nicknm, prof_pic_url, gender, gender_prvt, birth, birth_prvt, hobby, hobby_prvt, prgrm_lang, intrdc, intrdc_prvt, inp_date)
-		VALUES (#{userId}, #{nicknm}, #{profPicUrl}, #{gender}, #{genderPrvt}, #{birth}, #{birthPrvt}, #{hobby}, #{hobbyPrvt}, #{prgrmLang}, #{intrdc}, #{intrdcPrvt}, NOW());
+		VALUES (#{userId}, #{nicknm}, #{profPicUrl}, #{gender}, #{genderPrvt}, #{birth}, #{birthPrvt}, #{hobby}, #{hobbyPrvt}, #{prgrmLang}, #{intrdc}, #{intrdcPrvt}, NOW())
 	</insert>
 	<update id="profileComplete">
-		UPDATE sns_user SET prof_yn = 'Y' WHERE id = #{id};
+		UPDATE sns_user SET prof_yn = 'Y'
+		<where>
+			id = #{id}
+		</where>
 	</update>
+	<update id="accountUpd">
+		UPDATE sns_user
+		SET email = #{email}, password = #{password}
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	<update id="profileUpd">
+		UPDATE profile SET
+		nicknm = #{nicknm},
+		gender = #{gender},
+		gender_prvt = #{genderPrvt},
+		birth = #{birth},
+		birth_prvt = #{birthPrvt},
+		hobby = #{hobby},
+		hobby_prvt = #{hobbyPrvt},
+		prgrm_lang = #{prgrmLang},
+		intrdc = #{intrdc},
+		intrdc_prvt = #{intrdcPrvt}
+		<where>
+			user_id = #{userId}
+		</where>
+	</update>
+	<update id="profPicUpd">
+		UPDATE profile SET prof_pic_url = #{profPicUrl}
+		<where>
+			user_id = #{userId}
+		</where>
+	</update>
+	<delete id="accountDel">
+		DELETE FROM sns_user
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	<delete id="profileDel">
+		DELETE FROM profile
+		<where>
+			user_id = #{userId}
+		</where>
+	</delete>
 </mapper>

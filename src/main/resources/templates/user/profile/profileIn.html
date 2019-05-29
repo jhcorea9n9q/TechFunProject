@@ -53,20 +53,20 @@
                         <td class="prof_item">
                             <p>生年月日</p>
                             <select class="dateInput" th:field="*{year}">
-                            	<option value="0000"></option>
+                            	<option value=""></option>
                             	<option th:each="y : ${#numbers.sequence(2010,1910)}"  th:value="${y}" th:text="${y}"></option>
                             </select> 年
                             <select class="dateInput" th:field="*{month}">
-                            	<option value="00"></option>
+                            	<option value=""></option>
                             	<option th:each="m : ${#numbers.sequence(1,9)}" th:value="${'0'+m}" th:text="${'0'+m}"></option>
                             	<option th:each="m : ${#numbers.sequence(10,12)}" th:value="${m}" th:text="${m}"></option>
                             </select> 月
                             <select class="dateInput" th:field="*{day}">
-                            	<option value="00"></option>
+                            	<option value=""></option>
                                 <option th:each="d : ${#numbers.sequence(1,9)}" th:value="${'0'+d}" th:text="${'0'+d}"></option>
                             	<option th:each="d : ${#numbers.sequence(10,31)}" th:value="${d}" th:text="${d}"></option>
                             </select> 日
-                            <p class="must">(一部だけの選択も可能です。)</p>
+                            <p class="must">(全て選択しない場合、入力されません。)</p>
                         </td>
                         <td class="prof_prvt">
                             <p>公開範囲</p>

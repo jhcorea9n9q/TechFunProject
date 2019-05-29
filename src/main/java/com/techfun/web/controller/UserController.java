@@ -23,10 +23,11 @@ import com.techfun.domain.Profile;
 import com.techfun.domain.SNSUser;
 import com.techfun.service.UserDBAccessSample;
 import com.techfun.web.form.ProfileForm;
+import com.techfun.web.form.SignInForm;
 import com.techfun.web.form.UserForm;
 
 @Controller
-@SessionAttributes({"scopedTarget.sNSUser","userForm","profForm"})
+@SessionAttributes({"scopedTarget.sNSUser","signForm", "userForm","profForm"})
 public class UserController {
 	
 	@Autowired
@@ -34,6 +35,11 @@ public class UserController {
 	
 	@Autowired
 	private UserDBAccessSample UDS;
+	
+	@ModelAttribute("signForm")
+	public SignInForm setSignInForm() {
+		return new SignInForm();
+	}
 	
 	@ModelAttribute("userForm")
 	public UserForm setUserForm() {
@@ -83,8 +89,7 @@ public class UserController {
 	@RequestMapping(value="/main", method = RequestMethod.POST)
 	public String profileConf(
 			@Validated @ModelAttribute("profForm") ProfileForm profForm,  
-			BindingResult result, Model model, 
-			@RequestParam("file") MultipartFile file
+			BindingResult result, @RequestParam("file") MultipartFile file
 			) {
 		
 		if(result.hasErrors()) {
@@ -141,13 +146,13 @@ public class UserController {
 		String year = profForm.getYear();
 		String month = profForm.getMonth();
 		String day = profForm.getDay();
-		boolean birthFlag = false;
-		if(!year.equals("0000")) {
-			birthFlag = true;
-		}else if(!month.equals("00")) {
-			birthFlag = true;
-		}else if(!day.equals("00")) {
-			birthFlag = true;
+		boolean birthFlag = true;
+		if(year.equals("")) {
+			birthFlag = false;
+		}else if(month.equals("")) {
+			birthFlag = false;
+		}else if(day.equals("")) {
+			birthFlag = false;
 		}
 		if(birthFlag) {
 			profForm.setBirth(year + "-" + month + "-" + day);
@@ -197,12 +202,13 @@ public class UserController {
 	
 	@RequestMapping("/mypage")
 	public String mypage(
-			@ModelAttribute("userForm") UserForm userForm, 
-			@ModelAttribute("profForm") ProfileForm profForm
+			@ModelAttribute("signForm") SignInForm signForm, 
+			@ModelAttribute("profForm") ProfileForm profForm,
+			Model model
 			) {
 		Profile userProfile = UDS.getProfileData(userInfo);
 		
-		BeanUtils.copyProperties(userInfo, userForm);
+		BeanUtils.copyProperties(userInfo, signForm);
 		BeanUtils.copyProperties(userProfile, profForm);
 		
 		if(userProfile.getBirth()!=null) {
@@ -232,7 +238,164 @@ public class UserController {
 			profForm.setpLangs(pLangs);
 		}
 		
+		// ユーザチェック
+		if(userInfo.getEmail()!=null) {
+			model.addAttribute("user", "OK");
+		}
+		
 		return "user/profile/mypage";
+	}
+	
+	@RequestMapping(value="/mypage-account", method = RequestMethod.POST)
+	public String accountChange(
+			@Validated @ModelAttribute("signForm") SignInForm signForm,
+			BindingResult result
+			) {
+		
+		// 同じロジックがあります!
+		if(!signForm.getEmail().equals("")) {
+			SNSUser domain = new SNSUser();
+			BeanUtils.copyProperties(signForm, domain);
+			
+			if(UDS.emailHasSame(domain)) {
+				result.rejectValue("email", "alreadyHasSameEmail");
+			}
+		}
+		
+		// 同じロジックがあります!
+		if(!signForm.getPassword().equals("")) {
+			if(signForm.getPassword().length() < 4) {
+				result.rejectValue("password", "passwordTooShort");
+			}else {
+				if(!signForm.getPassword().equals(signForm.getPwd_c())) {
+					result.rejectValue("pwd_c", "passwordCheckUndone");
+				}
+			}
+		}
+		
+		if(!result.hasErrors()) {
+			userInfo.setEmail(signForm.getEmail());
+			userInfo.setPassword(signForm.getPassword());
+			UDS.accountUpd(userInfo);
+		}
+		
+		return "redirect:/mypage";
+	}
+	
+	@RequestMapping(value="/mypage-profile", method = RequestMethod.POST)
+	public String profileChange(
+			@Validated @ModelAttribute("profForm") ProfileForm profForm,  
+			BindingResult result, @RequestParam("file") MultipartFile file
+			) {
+		
+		if(!result.hasErrors()) {
+			boolean profPicNotUploaded = file.isEmpty();
+			String fileNm = "";
+			String oldPicURL = profForm.getProfPicUrl();
+			
+			if(!profPicNotUploaded) {
+				fileNm = file.getOriginalFilename();
+				OutputStream out = null;
+				
+				try {
+					byte[] bytes = file.getBytes();
+					String path = "C:\\spring\\kpsLee\\src\\main\\resources\\static\\profileImg\\" + userInfo.getId() + "\\";
+					File dir = new File(path);
+					if(!dir.exists()) {
+						dir.mkdirs();
+					}
+					// ここ以外は同じロジック!
+					if(!oldPicURL.equals("/lib/mainIcon.png")) {
+						File oldFile = new File("C:\\spring\\kpsLee\\src\\main\\resources\\static" + oldPicURL);
+						oldFile.delete();
+					}
+					File f = new File(path + fileNm);
+					out = new FileOutputStream(f);
+					out.write(bytes);
+				} catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+					if(out !=null) {
+						try {
+							out.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			
+			// 同じロジックが使われています!
+			profForm.setUserId(userInfo.getId());
+			
+			if(!profPicNotUploaded) {
+				profForm.setProfPicUrl("/profileImg/" + userInfo.getId() + "/" + fileNm);
+			} // ここは少し違います。
+			
+			if(profForm.getGender()==null) {
+				profForm.setGender(0);
+			}
+			
+			// 同じロジックが使われています!
+			String year = profForm.getYear();
+			String month = profForm.getMonth();
+			String day = profForm.getDay();
+			boolean birthFlag = true;
+			if(year.equals("")) {
+				birthFlag = false;
+			}else if(month.equals("")) {
+				birthFlag = false;
+			}else if(day.equals("")) {
+				birthFlag = false;
+			}
+			if(birthFlag) {
+				profForm.setBirth(year + "-" + month + "-" + day);
+			}
+			
+			String hobby = "";
+			if(profForm.getHobbys().length > 0) {
+				for(int i = 0; i < profForm.getHobbys().length; i++) {
+					if(i == profForm.getHobbys().length - 1) {
+						hobby += "[" +profForm.getHobbys()[i]  + "]";
+					}else {
+						hobby += "[" +profForm.getHobbys()[i]  + "],";
+					}
+				}
+				profForm.setHobby(hobby);
+			}
+			
+			String pLang = "";
+			if(profForm.getpLangs().length > 0) {
+				for(int i = 0; i < profForm.getpLangs().length; i++) {
+					if(i == profForm.getpLangs().length - 1) {
+						pLang += "[" +profForm.getpLangs()[i]  + "]";
+					}else {
+						pLang += "[" +profForm.getpLangs()[i]  + "],";
+					}
+				}
+				profForm.setPrgrmLang(pLang);
+			}
+			
+			Profile domain = new Profile();
+			BeanUtils.copyProperties(profForm, domain);
+			
+			if(!profPicNotUploaded) {
+				UDS.profPicUpd(domain);
+			}else {
+				UDS.profileUpd(domain);
+			}
+		}
+		
+		return "redirect:/mypage";
+	}
+	
+	@RequestMapping(value="/mypage-delete", method = RequestMethod.POST)
+	public String accountDelete(SessionStatus sess) {
+		UDS.accountDel(userInfo, UDS.getProfileData(userInfo));
+		sess.setComplete();
+		SNSUser domain = new SNSUser();
+		BeanUtils.copyProperties(domain, userInfo);
+		return "redirect:/println";
 	}
 	
 }

@@ -35,7 +35,7 @@ section {
     margin-bottom: 60px;
 }
 #home_main h3 span {
-    font-family:"SourceCodePro-Regular";
+    font-family: 'Source Code Pro', monospace;
     color: #ffe200;
 }
 #home_main button {
@@ -64,13 +64,14 @@ section {
     color: red;
 }
 footer {
-    font-family:"SourceCodePro-Regular";
+    font-family: 'Source Code Pro', monospace;
     width: 100%;
     height: 5vh;
     background-color: #717171;
     color: #cccccc;
     text-align: center;
+    min-width: 780px;
 }
 footer div {
-    padding-top: 15px;
+    padding-top: 5px;
 }

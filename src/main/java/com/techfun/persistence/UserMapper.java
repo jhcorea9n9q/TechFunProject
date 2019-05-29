@@ -18,5 +18,15 @@ public interface UserMapper {
 	public void insertProfile(Profile domain);
 	
 	public void profileComplete(SNSUser userInfo);
+	
+	public void accountUpd(SNSUser userInfo);
+	
+	public void profileUpd(Profile domain);
+	
+	public void profPicUpd(Profile domain);
+	
+	public void accountDel(SNSUser userInfo);
+	
+	public void profileDel(Profile domain);
 
 }
