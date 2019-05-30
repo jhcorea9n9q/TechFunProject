@@ -22,6 +22,7 @@ h1, h2, h3, h4, h5, h6, p {margin: 0; color: #dbdbdb; }
     background-color: white;
     position: fixed;
     border-bottom: 1px #b9b9b9 solid;
+    z-index: 1;
 }
 #wrap_head button:hover, wrap_head a:hover {
     cursor: pointer;

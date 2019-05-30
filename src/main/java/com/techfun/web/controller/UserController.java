@@ -217,9 +217,9 @@ public class UserController {
 			profForm.setMonth(date[1]);
 			profForm.setDay(date[2]);
 		}else {
-			profForm.setYear("0000");
-			profForm.setMonth("00");
-			profForm.setDay("00");
+			profForm.setYear("");
+			profForm.setMonth("");
+			profForm.setDay("");
 		}
 		
 		if(userProfile.getHobby()!=null) {
@@ -238,7 +238,7 @@ public class UserController {
 			profForm.setpLangs(pLangs);
 		}
 		
-		// ユーザチェック
+		// ヘッダー用のユーザチェック
 		if(userInfo.getEmail()!=null) {
 			model.addAttribute("user", "OK");
 		}
@@ -249,18 +249,9 @@ public class UserController {
 	@RequestMapping(value="/mypage-account", method = RequestMethod.POST)
 	public String accountChange(
 			@Validated @ModelAttribute("signForm") SignInForm signForm,
-			BindingResult result
+			BindingResult result,
+			@ModelAttribute("profForm") ProfileForm profForm, Model model
 			) {
-		
-		// 同じロジックがあります!
-		if(!signForm.getEmail().equals("")) {
-			SNSUser domain = new SNSUser();
-			BeanUtils.copyProperties(signForm, domain);
-			
-			if(UDS.emailHasSame(domain)) {
-				result.rejectValue("email", "alreadyHasSameEmail");
-			}
-		}
 		
 		// 同じロジックがあります!
 		if(!signForm.getPassword().equals("")) {
@@ -274,18 +265,21 @@ public class UserController {
 		}
 		
 		if(!result.hasErrors()) {
-			userInfo.setEmail(signForm.getEmail());
 			userInfo.setPassword(signForm.getPassword());
 			UDS.accountUpd(userInfo);
+			model.addAttribute("alertPass", "OK");
 		}
 		
-		return "redirect:/mypage";
+		model.addAttribute("user", "OK");
+		
+		return "user/profile/mypage";
 	}
 	
 	@RequestMapping(value="/mypage-profile", method = RequestMethod.POST)
 	public String profileChange(
 			@Validated @ModelAttribute("profForm") ProfileForm profForm,  
-			BindingResult result, @RequestParam("file") MultipartFile file
+			BindingResult result, @RequestParam("file") MultipartFile file,
+			@ModelAttribute("signForm") SignInForm signForm, Model model
 			) {
 		
 		if(!result.hasErrors()) {
@@ -332,11 +326,11 @@ public class UserController {
 				profForm.setProfPicUrl("/profileImg/" + userInfo.getId() + "/" + fileNm);
 			} // ここは少し違います。
 			
+			// 同じロジックが使われています!
 			if(profForm.getGender()==null) {
 				profForm.setGender(0);
 			}
 			
-			// 同じロジックが使われています!
 			String year = profForm.getYear();
 			String month = profForm.getMonth();
 			String day = profForm.getDay();
@@ -384,18 +378,38 @@ public class UserController {
 			}else {
 				UDS.profileUpd(domain);
 			}
+			model.addAttribute("alertProf", "OK");
 		}
 		
-		return "redirect:/mypage";
+		model.addAttribute("secondEvent", "OK");
+		model.addAttribute("user", "OK");
+		
+		return "user/profile/mypage";
 	}
 	
 	@RequestMapping(value="/mypage-delete", method = RequestMethod.POST)
-	public String accountDelete(SessionStatus sess) {
-		UDS.accountDel(userInfo, UDS.getProfileData(userInfo));
+	public String accountDelete(SessionStatus sess, Model model) {
+		Profile f = UDS.getProfileData(userInfo);
+		UDS.accountDel(userInfo, f);
+		
+		// プロフィール写真フォルダー削除
+		String picURL = f.getProfPicUrl();
+		if(!picURL.equals("/lib/mainIcon.png")) { // デフォルト画像以外は削除
+			File delDir = new File("C:\\spring\\kpsLee\\src\\main\\resources\\static\\profileImg\\" + userInfo.getId() + "\\");
+			File[] delList = delDir.listFiles();
+			for (File d : delList) {
+				d.delete();
+			}
+			delDir.delete();
+		}
+		
 		sess.setComplete();
 		SNSUser domain = new SNSUser();
 		BeanUtils.copyProperties(domain, userInfo);
-		return "redirect:/println";
+		
+		model.addAttribute("accountDeleted", "OK");
+		
+		return "home";
 	}
 	
 }

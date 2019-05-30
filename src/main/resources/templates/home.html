@@ -13,7 +13,7 @@
     <section class="f_l display_ib">
         <div id="home_main" class="f_l display_ib">
             <div id="userInfo" th:if="${nickname}">
-                <h4><span th:text="${nickname}"></span>さんがログイン中です。</h4>
+                <h4><span th:text="${nickname}"></span><br>さんがログイン中です。</h4>
             </div>
             <p th:if="${userInfo}">まだプロフィールを完成しておりません。<br />もう一度<span th:text="${userInfo}"></span>でログインして、作成を完了してください。</p>
             <h1>開発も、友達も大事。</h1>
@@ -36,5 +36,8 @@
             URL : https://github.com/jhcorea9n9q/TechFunProject
         </div>
     </footer>
+    <script th:if="${accountDeleted}" type="text/javascript">
+    	alert("アカウント削除を完了しました。");
+    </script>
 </body>
 </html>

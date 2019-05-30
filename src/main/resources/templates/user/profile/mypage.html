@@ -14,7 +14,6 @@
         $(document).ready(function(){
         	loginEvent();
             logoutEvent();
-        	firstEvent();
             listClick(".div_mypage_menubar ul li");
         });
     </script>
@@ -42,20 +41,21 @@
     <section class="wrap f_l display_ib backcolor_section">
         <div class="div_mypage_menubar f_l display_ib backcolor_section">
             <ul class="f_l display_ib">
-                <li id="fEvent">アカウント管理</li>
-                <li>プロフィール管理</li>
+                <li id="fEvent">パスワード変更</li>
+                <li id="sEvent">プロフィール管理</li>
                 <li>アカウント削除</li>
             </ul>
             <div class="div_mypage_menu f_l display_ib backcolor_div">
+            	<h1 class="color_w">アカウント管理</h1>
+            	<br>
                 <div id="my_account" class="div_mypage_data f_l display_ib backcolor_div">
-                    <h1>アカウント管理</h1>
+                    <h3>パスワード変更</h3>
                     <form th:action="@{/mypage-account}" th:object="${signForm}" method="post">
-                        <div class="f_l display_ib" th:if="${#fields.hasErrors('all')}">
+                        <div th:if="${#fields.hasErrors('all')}">
                             <p class="warning" th:errors="*{all}"></p>
                         </div>
-                        <p class="titles">@ E-mail</p>
-                        <input class="inputArea" type="email" th:field="*{email}" maxlength="200" />
-                        <br>
+                        <p class="titles">@ アカウントのE-mail</p>
+                        <p th:text="*{email}"></p>
                         <p class="titles">@ パスワード</p>
                         <input class="inputArea" type="password" th:field="*{password}" maxlength="20" />
                         <br>
@@ -66,14 +66,15 @@
                     </form>
                 </div>
                 <div id="my_profile" class="div_mypage_data f_l display_ib backcolor_div">
-                    <h1>プロフィール管理</h1>
+                    <h3>プロフィール管理</h3>
                     <form th:action="@{/mypage-profile}" th:object="${profForm}" enctype="multipart/form-data" method="post">
-                        <div class="f_l display_ib" th:if="${#fields.hasErrors('all')}">
+                        <div th:if="${#fields.hasErrors('all')}">
                             <p class="warning" th:errors="*{all}"></p>
                         </div>
                         <p class="titles">@ プロフィール写真</p>
                         <div class="profImg f_l display_ib">
                             <img th:src="@{{profPicUrl}(profPicUrl=*{profPicUrl})}" />
+                            <br>
                         </div>
                         <div class="fileinput f_l display_ib">
                             <input type="file" name="file" maxlength="25" /><br>
@@ -169,12 +170,12 @@
                     </form>
                 </div>
                 <div id="my_delete" class="div_mypage_data f_l display_ib backcolor_div">
-                    <h1>アカウント削除</h1>
+                    <h3>アカウント削除</h3>
                     <br>
                     <form th:action="@{/mypage-delete}" th:object="${signForm}" method="post">
                         <p>E-mail : <span th:text="*{email}"></span></p>
                         <br>
-                        <p class="warning">以上のアカウントを削除しますか？</p>
+                        <p class="warning">※ 以上のアカウントを削除しますか？</p>
                         <br>
                         <button class="my_deleteBtn" type="submit">アカウント完全削除</button>
                     </form>
@@ -182,5 +183,17 @@
             </div>
         </div>
      </section>
+     <script th:unless="${secondEvent}" type="text/javascript">
+    	firstEvent();
+	</script>
+    <script th:if="${secondEvent}" type="text/javascript">
+    	secondEvent();
+	</script>
+	<script th:if="${alertPass}" type="text/javascript">
+		alert("パスワード変更を完了しました。");
+	</script>
+	<script th:if="${alertProf}" type="text/javascript">
+		alert("プロフィールの変更を完了しました。");
+	</script>
 </body>
 </html>

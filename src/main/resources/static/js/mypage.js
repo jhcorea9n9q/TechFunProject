@@ -2,7 +2,14 @@ var firstEvent = function(){
     $("#fEvent").bind("click", function(){
         clickEvent(this, $(this).index());
     });
-            $("#fEvent").trigger("click");
+    $("#fEvent").trigger("click");
+}
+
+var secondEvent = function(){
+    $("#sEvent").bind("click", function(){
+        clickEvent(this, $(this).index());
+    });
+    $("#sEvent").trigger("click");
 }
         
 var listClick = function(li){

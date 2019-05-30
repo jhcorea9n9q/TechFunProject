@@ -46,7 +46,7 @@
 	</update>
 	<update id="accountUpd">
 		UPDATE sns_user
-		SET email = #{email}, password = #{password}
+		SET password = #{password}
 		<where>
 			id = #{id}
 		</where>
