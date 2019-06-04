@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" th:href="@{/lib/mainIcon.png}">
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/input.css}" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <title>投稿 /Println</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/input.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+        	loginEvent();
+            logoutEvent();
+            codeBtnEvent();
+        });
+    </script>
+</head>
+<body>
+    <header id="wrap_head" class="f_l display_ib">
+        <ul id="head_ul" class="display_ib">
+            <li id="h_home">
+                <a th:href="@{/println}">
+                    <img th:src="@{/lib/home.svg}" class="f_l display_ib" />
+                    ホーム
+                </a>
+            </li>
+            <li id="h_main">
+                <a th:href="@{/println/main}">
+                    <img th:src="@{/lib/mainIcon.png}" />
+                </a>
+            </li>
+            <li id="h_log">
+                <button th:unless="${user}" id="h_login" type="button">LOGIN</button>
+                <button th:if="${user}" id="h_logout" type="button">LOGOUT</button>
+            </li>
+        </ul>
+    </header>
+    <section class="wrap f_l display_ib backcolor_section">
+        <div id="inputDiv" class="f_l display_ib backcolor_div">
+            <h1>ひとこと、投稿しましょう。</h1>
+            <form th:action="@{/input-end}" th:object="${contForm}"
+            		 enctype="multipart/form-data" method="post">
+	            <div th:if="${#fields.hasErrors('all')}" id="errorOccur">
+	                <p th:errors="*{all}"></p>
+	            </div>
+                <textarea id="inputText" th:field="*{cont}" maxlength="150"></textarea>
+                <div id="actionDiv">
+                    <input type="file" name="file" id="file" />
+                    <p id="mbAlert">(最大5MBまで)</p>
+                    <button id="uploadBtn" name="uploadOne" type="submit">投稿!</button>
+                </div>
+                <br>
+                <button id="codeBtn" type="button">ソースコードを添付</button>
+                <textarea id="inputCode" th:field="*{code}"></textarea>
+            </form>
+        </div>
+    </section>
+</body>
+</html>

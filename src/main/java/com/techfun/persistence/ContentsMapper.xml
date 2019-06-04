@@ -4,4 +4,62 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.techfun.persistence.ContentsMapper">
+	<select id="newContNo" resultType="Integer">
+		SELECT MAX(cont_no) FROM contents
+	</select>
+	<insert id="insertCont">
+		INSERT INTO contents(user_id, cont, photo_yn, code_yn, inp_date)
+		VALUES (#{userId}, #{cont}, #{photoYn}, #{codeYn}, NOW())
+	</insert>
+	<insert id="insertContPhoto">
+		INSERT INTO contents_photo(user_id, cont_no, photo_nm, photo_url, inp_date)
+		VALUES (#{userId}, #{contNo}, #{photoNm}, #{photoUrl}, NOW())
+	</insert>
+	<insert id="insertContCode">
+		INSERT INTO contents_code(user_id, cont_no, code, inp_date)
+		VALUES (#{userId}, #{contNo}, #{code}, NOW())
+	</insert>
+	<select id="mainList" resultType="com.techfun.domain.Contents">
+		SELECT * FROM contents
+		ORDER BY cont_no DESC
+		LIMIT #{limit}, 10
+	</select>
+	<select id="mainOne" resultType="com.techfun.domain.Contents">
+		SELECT * FROM contents
+		<where>
+			user_id = #{userId}
+		</where>
+		 ORDER BY cont_no DESC
+		 LIMIT #{limit}, 10
+	</select>
+	<select id="mainPhoto" resultType="com.techfun.domain.ContentsPhoto">
+		SELECT photo_nm, photo_url FROM contents_photo
+		<where>
+			cont_no = #{contNo}
+		</where>
+	</select>
+	<select id="mainCode" resultType="com.techfun.domain.ContentsCode">
+		SELECT code FROM contents_code
+		<where>
+			cont_no = #{contNo}
+		</where>
+	</select>
+	<delete id="contDel">
+		DELETE FROM contents
+		<where>
+			user_id = #{userId}
+		</where>
+	</delete>
+	<delete id="contPhotoDel">
+		DELETE FROM contents_photo
+		<where>
+			user_id = #{userId}
+		</where>
+	</delete>
+	<delete id="contCodeDel">
+		DELETE FROM contents_code
+		<where>
+			user_id = #{userId}
+		</where>
+	</delete>
 </mapper>

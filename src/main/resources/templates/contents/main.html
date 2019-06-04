@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" th:href="@{/lib/mainIcon.png}">
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/contents.css}" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <title th:if="${profileInfo}" th:text="${profileInfo.nicknm}+' /Println'">メイン</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/contents.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+        	loginEvent();
+            logoutEvent();
+            buttonEvent();
+        });
+    </script>
+</head>
+<body>
+    <header id="wrap_head" class="f_l display_ib">
+        <ul id="head_ul" class="display_ib">
+            <li id="h_home">
+                <a th:href="@{/println}">
+                    <img th:src="@{/lib/home.svg}" class="f_l display_ib" />
+                    ホーム
+                </a>
+            </li>
+            <li id="h_main">
+                <a th:href="@{/println/main}">
+                    <img th:src="@{/lib/mainIcon.png}" />
+                </a>
+            </li>
+            <li id="h_log">
+                <button th:unless="${user}" id="h_login" type="button">LOGIN</button>
+                <button th:if="${user}" id="h_logout" type="button">LOGOUT</button>
+            </li>
+        </ul>
+    </header>
+    <section id="head_background" class="f_l display_ib"></section>
+    <section id="contentsSection" class="f_l display_ib backcolor_section">
+        <div id="contentsDiv" class="f_l display_ib">
+            <div id="profileDiv" class="f_l display_ib">
+                <div id="profileImg" class="f_l display_ib">
+                    <img th:src="@{{profPicUrl}(profPicUrl=${profileInfo.profPicUrl})}">
+                </div>
+                <div id="profileNm" class="f_l display_ib">
+                    <h3 th:text="${profileInfo.nicknm}"></h3>
+                </div>
+                <div id="profileOther" class="f_l display_ib">
+                    <h5>
+                        <span>
+                            <img th:if="${profileInfo.gender} != 0 and ${profileInfo.genderPrvt != 0}"  th:src="@{/lib/gender.png}" />
+                        </span>
+                        <span th:if="${profileInfo.gender} == 1 and ${profileInfo.genderPrvt != 0}" class="s_text">男</span>
+                        <span th:if="${profileInfo.gender} == 2 and ${profileInfo.genderPrvt != 0}" class="s_text">女</span>
+                        <span>
+                            <img th:if="${profileInfo.birth} and ${profileInfo.birthPrvt != 0}" th:src="@{/lib/cake.png}" />
+                        </span>
+                        <span th:if="${profileInfo.birth} and ${profileInfo.birthPrvt != 0}"  th:text="${profileInfo.birth}" class="s_text"></span>
+                    </h5>
+                    <br>
+                    <h5 th:if="${profileInfo.prgrmLang}">使用言語<br><span th:text="${profileInfo.prgrmLang}"></span></h5>
+                    <h5 th:if="${profileInfo.hobby} and ${profileInfo.hobbyPrvt != 0}">趣味<br><span th:text="${profileInfo.hobby}"></span></h5>
+                    <h5></h5>
+                    <h5 id="introD" th:if="${profileInfo.intrdc} and ${profileInfo.intrdcPrvt != 0}">自己紹介<br><span th:text="${profileInfo.intrdc}"></span></h5>
+                </div>
+                <img th:if="${loginUserInfo} and ${loginUserInfo.id == pageUserInfo.id}" id="setting" th:src="@{/lib/setting.png}" />
+            </div>
+            <div id="mainContents" class="f_l display_ib backcolor_div">
+                <ul>
+                    <li id="findOne" class="f_l display_ib">投稿</li>
+                    <li id="findAll" class="f_l display_ib">みんなの投稿</li>
+                    <img th:if="${loginUserInfo} and ${loginUserInfo.id == pageUserInfo.id}" class="f_r display_ib" id="write"  th:src="@{/lib/write.png}" />
+                </ul>
+                <div th:if="${contList} and ${contList.size()} > 0" 
+                		th:each="contForm : ${contList}" class="see_me f_l display_ib">
+                    <div class="see_profImg f_l display_ib">
+                        <img th:src="@{{profImg}(profImg=${profileList[__${contFormStat.index}__].profPicUrl})}" />
+                    </div>
+                    <div th:text="${profileList[__${contFormStat.index}__].nicknm}" class="see_nick f_l display_ib"></div>
+                    <div class="see_time f_l display_ib">@ <span th:if="${contForm.inpDate}" th:text="${contForm.inpDate}"></span></div>
+                    <div th:text="${contForm.cont}" class="see_main f_l display_ib"></div>
+                    <div th:if="${contForm.photoYn} == 'Y'" class="see_photo f_l display_ib">
+                        <img th:src="@{{photoImg}(photoImg=${contPhotos[__${contFormStat.index}__].photoUrl})}" />
+                        <h5 th:text="${contPhotos[__${contFormStat.index}__].photoNm}"></h5>
+                    </div>
+                    <div th:if="${contForm.codeYn} == 'Y'" class="see_code f_l display_ib">
+                        <pre th:text="${contCode[__${contFormStat.index}__].code}"></pre>
+                    </div>
+                </div>
+                <div id="see_more" class="f_l display_ib">
+                    <img th:src="@{/lib/more.png}">
+                </div>
+            </div>
+            <div id="friendsDiv" class="f_l display_ib">
+                <h3>他の利用者</h3>
+                <hr>
+                <div th:if="${snsPList} and ${snsPList.size()} > 0" 
+                		th:each="pForm : ${snsPList}" class="checkfriend f_l display_ib">
+                    <img class="f_l display_ib" th:src="@{{uImg}(uImg=${pForm.profPicUrl})}" />
+                    <h5 th:text="${pForm.nicknm}"></h5>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.techfun.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,16 @@ public class UserDBAccessService implements UserDBAccessSample {
 			result = mapper.accountCheckbyNick(domain);
 		}
 		return result;
+	}
+	
+	@Override
+	public List<SNSUser> getUserList() {
+		return mapper.getUserList();
+	}
+	
+	@Override
+	public SNSUser getUserData(SNSUser domain) {
+		return mapper.getUserData(domain);
 	}
 
 	@Override

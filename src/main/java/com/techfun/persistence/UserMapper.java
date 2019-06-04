@@ -1,5 +1,7 @@
 package com.techfun.persistence;
 
+import java.util.List;
+
 import com.techfun.domain.Profile;
 import com.techfun.domain.SNSUser;
 
@@ -12,6 +14,10 @@ public interface UserMapper {
 	public SNSUser accountCheck(SNSUser domain);
 	
 	public SNSUser accountCheckbyNick(SNSUser domain);
+	
+	public List<SNSUser> getUserList();
+	
+	public SNSUser getUserData(SNSUser domain);
 	
 	public Profile getProfileData(SNSUser userInfo);
 	

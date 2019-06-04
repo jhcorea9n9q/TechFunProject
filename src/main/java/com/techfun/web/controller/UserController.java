@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,14 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.techfun.domain.Contents;
+import com.techfun.domain.ContentsCode;
+import com.techfun.domain.ContentsPhoto;
 import com.techfun.domain.Profile;
 import com.techfun.domain.SNSUser;
+import com.techfun.service.ContentsDBAccessSample;
 import com.techfun.service.UserDBAccessSample;
+import com.techfun.util.MainPageUtil;
 import com.techfun.web.form.ProfileForm;
 import com.techfun.web.form.SignInForm;
 import com.techfun.web.form.UserForm;
@@ -35,6 +42,9 @@ public class UserController {
 	
 	@Autowired
 	private UserDBAccessSample UDS;
+	
+	@Autowired
+	private ContentsDBAccessSample CDS;
 	
 	@ModelAttribute("signForm")
 	public SignInForm setSignInForm() {
@@ -75,8 +85,53 @@ public class UserController {
 			return "user/profile/profileIn";
 		}
 		
-		model.addAttribute("userInfo", userInfo);
-		model.addAttribute("profileInfo", UDS.getProfileData(userInfo));
+		model = MainPageUtil.modelMaker(model, userInfo, userInfo, UDS.getProfileData(userInfo), true);
+		
+		/////////////////
+		List<Contents> contList = new ArrayList<>();
+		List<ContentsPhoto> contPhotos = new ArrayList<>();
+		List<ContentsCode> contCode = new ArrayList<>();
+		List<Profile> profileList = new ArrayList<>();
+		
+		contList = CDS.mainList(0);
+		for(Contents cont : contList) {
+			
+			SNSUser userIf = new SNSUser();
+			userIf.setId(cont.getUserId());
+			profileList.add(UDS.getProfileData(userIf));
+			
+			if(cont.getPhotoYn().equals("Y")) {
+				ContentsPhoto domain = new ContentsPhoto();
+				domain.setContNo(cont.getContNo());
+				contPhotos.add(CDS.mainPhoto(domain));
+			}else {
+				contPhotos.add(null);
+			}
+			
+			if(cont.getCodeYn().equals("Y")) {
+				ContentsCode domain = new ContentsCode();
+				domain.setContNo(cont.getContNo());
+				contCode.add(CDS.mainCode(domain));
+			}else {
+				contCode.add(null);
+			}
+			
+		}
+		
+		List<SNSUser> snsList = new ArrayList<>();
+		List<Profile> snsPList = new ArrayList<>();
+		snsList = UDS.getUserList();
+		for(SNSUser sl : snsList) {
+			snsPList.add(UDS.getProfileData(sl));
+		}
+		
+		model.addAttribute("contList", contList);
+		model.addAttribute("contPhotos", contPhotos);
+		model.addAttribute("contCode", contCode);
+		model.addAttribute("profileList", profileList);
+		model.addAttribute("snsPList", snsPList);
+		/////////////////
+		
 		return "contents/main";
 	}
 	
@@ -195,17 +250,65 @@ public class UserController {
 	
 	@RequestMapping(value="/main", params = "finish")
 	public String profileFinish(Model model) {
-		model.addAttribute("userInfo", userInfo);
-		model.addAttribute("profileInfo", UDS.getProfileData(userInfo));	
+		model = MainPageUtil.modelMaker(model, userInfo, userInfo, UDS.getProfileData(userInfo), true);
+		
+		/////////////////
+		List<Contents> contList = new ArrayList<>();
+		List<ContentsPhoto> contPhotos = new ArrayList<>();
+		List<ContentsCode> contCode = new ArrayList<>();
+		List<Profile> profileList = new ArrayList<>();
+		
+		contList = CDS.mainList(0);
+		for(Contents cont : contList) {
+			
+			SNSUser userIf = new SNSUser();
+			userIf.setId(cont.getUserId());
+			profileList.add(UDS.getProfileData(userIf));
+			
+			if(cont.getPhotoYn().equals("Y")) {
+				ContentsPhoto domain = new ContentsPhoto();
+				domain.setContNo(cont.getContNo());
+				contPhotos.add(CDS.mainPhoto(domain));
+			}else {
+				contPhotos.add(null);
+			}
+			
+			if(cont.getCodeYn().equals("Y")) {
+				ContentsCode domain = new ContentsCode();
+				domain.setContNo(cont.getContNo());
+				contCode.add(CDS.mainCode(domain));
+			}else {
+				contCode.add(null);
+			}
+			
+		}
+		
+		List<SNSUser> snsList = new ArrayList<>();
+		List<Profile> snsPList = new ArrayList<>();
+		snsList = UDS.getUserList();
+		for(SNSUser sl : snsList) {
+			snsPList.add(UDS.getProfileData(sl));
+		}
+		
+		model.addAttribute("contList", contList);
+		model.addAttribute("contPhotos", contPhotos);
+		model.addAttribute("contCode", contCode);
+		model.addAttribute("profileList", profileList);
+		model.addAttribute("snsPList", snsPList);
+		/////////////////
+		
 		return "contents/main";
 	}
 	
-	@RequestMapping("/mypage")
+	@RequestMapping(value="/mypage")
 	public String mypage(
 			@ModelAttribute("signForm") SignInForm signForm, 
 			@ModelAttribute("profForm") ProfileForm profForm,
 			Model model
 			) {
+		if(userInfo.getEmail()==null || !userInfo.getProfYn().equals("Y")) {
+			return "redirect:/println";
+		}
 		Profile userProfile = UDS.getProfileData(userInfo);
 		
 		BeanUtils.copyProperties(userInfo, signForm);
@@ -239,9 +342,7 @@ public class UserController {
 		}
 		
 		// ヘッダー用のユーザチェック
-		if(userInfo.getEmail()!=null) {
-			model.addAttribute("user", "OK");
-		}
+		model.addAttribute("user", "OK");
 		
 		return "user/profile/mypage";
 	}
@@ -381,8 +482,8 @@ public class UserController {
 			model.addAttribute("alertProf", "OK");
 		}
 		
-		model.addAttribute("secondEvent", "OK");
-		model.addAttribute("user", "OK");
+		model.addAttribute("secondEvent", "OK"); // 2番目のメニューへ移動させる
+		model.addAttribute("user", "OK"); // ユーザがログインしています
 		
 		return "user/profile/mypage";
 	}
@@ -390,6 +491,14 @@ public class UserController {
 	@RequestMapping(value="/mypage-delete", method = RequestMethod.POST)
 	public String accountDelete(SessionStatus sess, Model model) {
 		Profile f = UDS.getProfileData(userInfo);
+		Contents contDomain = new Contents();
+		contDomain.setUserId(userInfo.getId());
+		ContentsPhoto contPhotoDomain = new ContentsPhoto();
+		contPhotoDomain.setUserId(userInfo.getId());
+		ContentsCode contCodeDomain = new ContentsCode();
+		contCodeDomain.setUserId(userInfo.getId());
+		
+		CDS.contDel(contDomain, contPhotoDomain, contCodeDomain);
 		UDS.accountDel(userInfo, f);
 		
 		// プロフィール写真フォルダー削除

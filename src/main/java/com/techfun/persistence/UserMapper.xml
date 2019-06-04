@@ -27,6 +27,18 @@
 			profile.nicknm = #{email} AND password = #{password} AND del_yn = 'N'
 		</where>
 	</select>
+	<select id="getUserList" resultType="com.techfun.domain.SNSUser">
+		SELECT * FROM sns_user
+		<where>
+			prof_yn = 'Y' AND del_yn = 'N'
+		</where>
+	</select>
+	<select id="getUserData" resultType="com.techfun.domain.SNSUser">
+		SELECT * FROM sns_user
+		<where>
+			id = #{id} AND del_yn = 'N'
+		</where>
+	</select>
 	<select id="getProfileData" resultType="com.techfun.domain.Profile">
 		SELECT profile.* FROM sns_user
 		INNER JOIN profile ON sns_user.id = profile.user_id

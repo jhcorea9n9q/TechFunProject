@@ -1,0 +1,238 @@
+button:hover {cursor: pointer;}
+
+#head_background {
+    width: 100%;
+    margin-top: 50px;
+    height: 300px;
+    background-image: url("../lib/home_back.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+#contentsSection {
+    width: 100%;
+    height: auto;
+    min-height: calc(100vh - 350px);
+    min-width: 1000px;
+}
+
+#contentsDiv {
+    width: 1000px;
+    height: auto;
+    min-height: calc(100vh - 350px);
+    margin: 0 calc((100% - 1000px) / 2);
+    color: #dbdbdb;
+}
+
+#profileDiv {
+    width: 1000px;
+    height: 250px;
+}
+#setting {
+    position: relative;
+    left: 60px;
+    top: 13px;
+    width: 30px;
+    height: 30px;
+}
+#setting {
+    cursor: pointer;
+}
+#profileImg {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    bottom: 50px;
+    border-radius: 100px;
+}
+#profileImg img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+}
+#profileImg img:hover {
+    cursor: pointer;
+}
+#profileNm {
+    width: 200px;
+    height: 100px;
+    position: relative;
+    top: 150px;
+    right: 200px;
+    text-align: center;
+}
+#profileNm h3 {
+    margin-top: 10px;
+    color: white;
+}
+#profileOther {
+    width: 750px;
+    margin-left: 50px;
+    margin-top: 20px;
+    height: 230px;
+    position: relative;
+    bottom: 100px;
+}
+#profileOther h5 {
+    margin-bottom: 12px;
+    color: #ffe200;
+}
+.s_text {
+    float: left;
+    margin-left: 5px;
+    margin-right: 15px;
+}
+#profileOther h5 span {
+    color: white;
+}
+#profileOther h5 img {
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+#mainContents {
+    width: 730px;
+    height: auto;
+    margin: 50px 10px;
+    border-radius: 15px;
+}
+#write {
+    position: relative;
+    right: 10px;
+    top: 5px;
+    width: 35px;
+    height: 35px;
+}
+#write:hover {
+    cursor: pointer;
+}
+#mainContents ul {
+    width: 730px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 49px;
+    background-color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom: 1px solid #2e3136;
+    color: black;
+    text-align: center;
+}
+#mainContents ul li {
+    margin: 12px 25px;
+    height: 25px;
+    width: 100px;
+}
+#mainContents ul li:hover {
+    cursor: pointer;
+    color: #ff3030 !important;
+}
+.see_me {
+    width: 700px;
+    margin: 0 15px;
+    padding: 20px 0;
+    height: auto;
+    border-bottom: 1px dotted white;
+}
+.see_profImg {
+    width: 59px;
+    height: 59px;
+    border-radius: 50px;
+    margin: 1px;
+}
+.see_profImg img {
+    width: 59px;
+    height: 59px;
+    border-radius: 50px;
+}
+.see_profImg:hover {
+    cursor: pointer;
+    border: #ffe200 solid 1px;
+    margin: 0;
+
+}
+.see_nick {
+    width: auto;
+    height: 40px;
+    margin-left: 20px;
+    margin-top: 20px;
+    color: white;
+}
+.see_nick:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.see_time {
+    width: auto;
+    height: 40px;
+    margin-left: 30px;
+    margin-top: 20px;
+}
+.see_main {
+    width: 680px;
+    height: auto;
+    margin: 20px 10px;
+    color: white;
+}
+.see_photo {
+    width: 680px;
+    height: auto;
+    margin: 20px 10px;
+}
+.see_photo img {
+    width: 680px;
+}
+.see_photo h5 {
+    text-align: center;
+}
+.see_code {
+    width: 638px;
+    height: auto;
+    margin: 20px 10px;
+    border: 1px white solid;
+    padding: 20px;
+}
+.see_code pre {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.8em;
+    white-space: pre-wrap;
+}
+#see_more {
+    width: 100px;
+    margin: 0 300px;
+    height: 40px;
+    text-align: center;
+}
+#see_more img:hover {
+    cursor: pointer;
+}
+
+#friendsDiv {
+    width: 250px;
+    margin-top: 50px;
+}
+#friendsDiv h3 {
+    text-align: center;
+}
+.checkfriend {
+    width: 240px;
+    height: 50px;
+    margin: 10px 5px;
+}
+.checkfriend:hover {
+    cursor: pointer;
+}
+.checkfriend img {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin-right: 10px;
+}
+.checkfriend h5 {
+    margin-top: 10px;
+}
+.checkfriend h5:hover {
+    text-decoration-line: underline;
+}

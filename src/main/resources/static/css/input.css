@@ -1,0 +1,78 @@
+.wrap {
+    width: 100%;
+    height: auto;
+    min-width: 800px;
+    margin-top: 50px;
+}
+#inputDiv {
+    width: 700px;
+    min-height: calc(100vh - 150px);
+    margin: 0 calc((100% - 800px) / 2);
+    color: #dbdbdb;
+    padding: 50px;
+}
+textarea {
+    resize: vertical;
+    outline: none;
+}
+#inputText {
+    margin: 50px;
+    padding: 10px 20px;
+    width: 560px;
+    height: 60px;
+    border-radius: 5px;
+}
+form button {
+    border:none;
+}
+form button:hover {
+    cursor: pointer;
+}
+#inputCode {
+    margin: 50px;
+    padding: 10px;
+    width: 580px;
+    height: 500px;
+    display: none;
+}
+#actionDiv {
+    width: 600px;
+    margin: 0 50px;
+    height: 80px;
+}
+#file {
+    float: left;
+}
+#mbAlert {
+    color: red;
+    font-size: 15px;
+}
+#codeBtn {
+    width: 200px;
+    height: 50px;
+    margin: 0 250px;
+    border-radius: 5px;
+    background-color: #3c78ff;
+    color: white;
+}
+#codeBtn:hover {
+    background-color: #82a9ff;
+}
+#uploadBtn {
+    float: right;
+    width: 80px;
+    height: 35px;
+    border-radius: 25px;
+    background-color: white;
+    color: black;
+}
+#uploadBtn:hover {
+    background-color: #e2e2e2;
+}
+#errorOccur {
+    width: 600px;
+    margin: 50px 50px 0 50px;
+}
+#errorOccur p {
+    color: red;
+}
