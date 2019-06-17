@@ -101,7 +101,7 @@
                 <div th:if="${snsPList} and ${snsPList.size()} > 0" 
                 		th:each="pForm : ${snsPList}" class="checkfriend f_l display_ib">
                     <img class="f_l display_ib" th:src="@{{uImg}(uImg=${pForm.profPicUrl})}" />
-                    <h5 th:text="${pForm.nicknm}"></h5>
+                    <a th:href="@{/println/main/{userNo}(userNo=${pForm.userId})}"><h5 th:text="${pForm.nicknm}"></h5></a>
                 </div>
             </div>
         </div>
